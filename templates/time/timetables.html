@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Timetables
+{% endblock %}
+
+{% block content %}
+
+<script>
+    function generatePDF() {
+        const element = document.getElementById("this-is-for-pdf");
+        html2pdf()
+          .set(
+              {filename:'{{department}} Department - {{session}} Session - {{semester}}'}
+            )
+          .from(element)
+          .save();
+      }
+</script>
+<br>
+<center>
+    <button class="btn btn-danger" type="button" onclick="generatePDF()">
+        <span class="fa fa-download"></span> Download
+    </button>
+</center>
+
+<div id="this-is-for-pdf">
+    {% for i,j in final_result.items %}
+    <br>
+    <center>
+        <div class="card" style="width: 95%;border-radius: 0px;border-color: black;">
+            <div class="card-header text-center" style="border-radius: 0px;border-color: black;">
+                <p>
+                    Section - {{i}}
+                </p>
+            </div>
+            <div class="card-body" style="border-radius: 0px;border-color: black;">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">8-9</th>
+                            <th scope="col">9-10</th>
+                            <th scope="col">10-11</th>
+                            <th scope="col">11-12</th>
+                            <th scope="col">12-1</th>
+                            <th scope="col">1-2</th>
+                            <th scope="col">2-3</th>
+                            <th scope="col">3-4</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for k,l in j.items %}
+                            <tr>
+                                <th scope="row" class="text-uppercase">{{k}}</th>
+                                <td>{{l.89}}</td>
+                                <td>{{l.910}}</td>
+                                <td>{{l.1011}}</td>
+                                <td>{{l.1112}}</td>
+                                <td>{{l.121}}</td>
+                                <td>{{l.12}}</td>
+                                <td>{{l.23}}</td>
+                                <td>{{l.34}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </center>
+    <div class="html2pdf__page-break"></div>
+    {% endfor %}
+</div>
+<br>
+{% endblock %}

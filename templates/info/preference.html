@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Preferences
+{% endblock %}
+
+{% block content %}
+
+<div class="modal fade" id="new-modal" tabindex="-1" role="dialog" aria-labelledby="new-modalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="new-modalLabel">Add New Prefference</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="POST" id="form1" class="form-inline text-center">{% csrf_token %}
+            <select class="form-control" id="form1" name="from" style="width: 45%;">
+                <option value="8">8 AM</option><option value="9">9 AM</option><option value="10">10 AM</option>
+                <option value="11">11 AM</option><option value="12">12 PM</option><option value="1">1 PM</option>
+                <option value="2">2 PM</option><option value="3">3 PM</option>
+            </select>
+            &ensp; To &ensp;
+            <select class="form-control" id="form1" name="to" style="width: 45%;">
+                <option value="9">9 AM</option><option value="10">10 AM</option>
+                <option value="11">11 AM</option><option value="12">12 PM</option><option value="1">1 PM</option>
+                <option value="2">2 PM</option><option value="3">3 PM</option><option value="4">4 PM</option>
+            </select>
+          </form>
+          <br>
+          <center>
+            <button class="btn btn-primary text-center" onclick="document.getElementById('form1').submit();">
+                Save
+            </button>
+            </center>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<center>
+    <br>
+    <div class="card" style="width: 50%;">
+        <div class="card-header">
+            Time Preferences
+        </div>
+        <div class="card-body">
+            {% if profile.preferred_slots.all %}
+                {% for i in profile.preferred_slots.all %}
+                    <p>
+                        Slot # {{forloop.counter}} : {{i.start_time}} {% if i.start_time > 11 %}PM{% else %}AM{% endif %}&ensp;-&ensp;{{i.end_time}} {% if i.end_time > 11 %}PM{% else %}AM{% endif %}&ensp;&ensp;
+                        <span class="fa fa-lg fa-remove" style="color: red;cursor: pointer;" title="Delete this preference" onclick="delthistimefunc('{{i.id}}')"></span>
+                    </p>
+                {% endfor %}
+            {% else %}
+            <p>
+                Add preferred time slots for your classes. These preferrences would be used to determine the timetable for all sessions and subjects you are teaching right now. It is not neccessary that you get exactly the same time as you requested.
+            </p>
+            {% endif %}
+            <button class="btn btn-primary" data-toggle="modal" data-target="#new-modal">Add Preferrence</button>
+        </div>
+    </div>
+</center>
+
+{% if message %}
+<script>
+    window.alert('{{message}}');
+</script>
+{% endif %}
+
+<script>
+    function delthistimefunc(a){
+        window.location.href = '/delete-preference/'+a;
+    }
+</script>
+
+{% endblock %}

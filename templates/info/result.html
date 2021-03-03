@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Subjects
+{% endblock %}
+
+{% block content %}
+
+<center>
+    <br>
+    <div class="card" style="width: 65%;">
+        <div class="card-header">
+            Result Sheet
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col"># No</th>
+                        <th scope="col">Subject</th>
+                        <th scope="col">Taught By</th>
+                        <th scope="col">Credit Hours</th>
+                        <th scope="col">Grade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in data %}
+                        <tr>
+                            <th scope="row">{{forloop.counter}}</th>
+                            <th>{{i.course.name}}</th>
+                            <th>{{i.course.taught_by.get_full_name}}</th>
+                            <th>{{i.course.credit_hour}}</th>
+                            <th>{{i.grade}}</th>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+</center>
+
+{% if message %}
+<script>
+    window.alert('{{message}}');
+</script>
+{% endif %}
+
+<script>
+    function unregfunc(a){
+        window.location.href = '/unregister-subject/'+a
+    }
+    function regfunc(a,b){
+        window.location.href = '/register-subject/'+a+'/'+b
+    }
+</script>
+
+{% endblock %}
