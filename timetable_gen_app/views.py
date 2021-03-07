@@ -35,7 +35,10 @@ def generate_timetables(request):
     )
 
     sections_dict = {}
+    sections_course_lists = {}
+
     for i in selected_sections:
+        sections_course_lists[i.name] = []
         temp_dict = {'course':i.for_course.name,'teacher':i.for_course.taught_by}
         if i.for_course.contact_hour == 3:
             if i.for_course.credit_hour == 1:
@@ -48,6 +51,10 @@ def generate_timetables(request):
             sections_dict[i.name].append(temp_dict)
         except:
             sections_dict[i.name] = [temp_dict]
+
+    for i in sections_dict:
+        for j in sections_dict[i]:
+            sections_course_lists[i].append(j['course'])
 
     teacher_pref = {}
     for i,j in sections_dict.items():
@@ -66,7 +73,7 @@ def generate_timetables(request):
             for l in k['class']:
                 temp = check_or_get_series(pref_slots,l)
                 if len(temp) != 0:
-                    final_result = check_empty_and_fill(final_result,temp,l,k['course'])
+                    final_result = check_empty_and_fill(final_result,temp,l,k['course'],sections_course_lists)
         break
                 
     context['final_result'] = final_result
