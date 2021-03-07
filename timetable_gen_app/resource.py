@@ -37,19 +37,21 @@ static_series_time_3 = ['89','910','12']
 
 def check_or_get_series(a,b):
     if b == 3:
-        temp = list(set(static_series_time_3) & set(a)) + static_series_time_3
+        temp = set(set(static_series_time_3) & set(a)).union(static_series_time_3)
     elif b == 2:
-        temp = list(set(static_series_time_2) & set(a)) + static_series_time_2
+        temp = set(set(static_series_time_2) & set(a)).union(static_series_time_2)
     else:
-        temp = list(set(static_series_time_1) & set(a)) + static_series_time_1
+        temp = set(set(static_series_time_1) & set(a)).union(static_series_time_1)
     return list(temp)
 
-def check_empty_and_fill(a,b,c,d):
+def check_empty_and_fill(a,b,c,d,e):
     sections = []
     days = ['monday','tuesday','wednesday','thursday','friday']
     for i in a:
         sections.append(i)
     for i in sections:
+        if d not in e[i]:
+            continue
         for j in days:
             for k in b:
                 if a[i][j][k] == '':
